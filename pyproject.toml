@@ -1,0 +1,16 @@
+[project]
+name = "vulnify-agent-starter"
+version = "0.1.0"
+description = "Minimal agent whose tool calls are authorized by Vulnify (ALLOW / REVIEW / BLOCK) before they run."
+requires-python = ">=3.9"
+dependencies = ["vulnify>=0.4.2,<0.5"]
+
+[project.optional-dependencies]
+dev = ["ruff>=0.6"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "SIM"]
