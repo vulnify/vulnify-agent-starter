@@ -34,6 +34,8 @@ The scripted agent makes three calls:
 
 The actual outcome depends on the policies in your workspace. While the REVIEW waits, open the dashboard (or Slack, if connected) and approve or deny it.
 
+**Using Claude?** You can try the same ALLOW / REVIEW / BLOCK flow without code: **[Connect to Claude](https://claude.ai/directory/vulnify)** (Vulnify is in Claude's connector directory), sign in, then follow the [Claude connector guide](https://docs.vulnify.io/guides/claude-connector-approval/?utm_source=github&utm_medium=template&utm_campaign=starter).
+
 ## Use it with your own agent
 
 ```python
