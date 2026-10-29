@@ -1,0 +1,55 @@
+# input.action is the event action. input.resource is the resource name.
+# expect.policy is metadata.name of a Policy document.
+# `vulnify test --local` sends these cases with the policies in vulnify/policies.
+# It writes no security event. Any non-revoked key works, including a TEST key.
+apiVersion: vulnify.io/v1
+kind: PolicyTest
+metadata:
+  name: starter-rules
+cases:
+  - name: a read is allowed
+    input:
+      agent: StarterAgent
+      action: READ_DATA
+      resource: Support Tickets
+    expect:
+      decision: ALLOW
+      policy: allow-reads
+  - name: a bulk export to an external email waits for a person
+    input:
+      agent: StarterAgent
+      action: EXPORT_DATA
+      resource: Sales Reports
+      destination: EXTERNAL_EMAIL
+      recordsAffected: 800
+    expect:
+      decision: REVIEW
+      policy: review-bulk-external-export
+  - name: a bulk export to an external API waits for a person
+    input:
+      agent: StarterAgent
+      action: EXPORT_DATA
+      resource: Sales Reports
+      destination: EXTERNAL_API
+      recordsAffected: 100
+    expect:
+      decision: REVIEW
+      policy: review-bulk-external-export
+  - name: a production delete is blocked
+    input:
+      agent: StarterAgent
+      action: DELETE_DATA
+      resource: Production Database
+      recordsAffected: 10000
+    expect:
+      decision: BLOCK
+      policy: block-production-deletes
+  - name: a one-row delete is blocked too
+    input:
+      agent: StarterAgent
+      action: DELETE_DATA
+      resource: Production Database
+      recordsAffected: 1
+    expect:
+      decision: BLOCK
+      policy: block-production-deletes

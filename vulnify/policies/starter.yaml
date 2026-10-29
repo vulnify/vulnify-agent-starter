@@ -1,0 +1,49 @@
+# Safe to commit. Put API keys in .env (gitignored), not in this file.
+#
+# spec.action is the action family (READ, WRITE, DELETE, EXPORT, ANY).
+# spec.resource is a resource type. ANY matches every type. It is not the
+# resource name the agent sends (that name is only on the event and in tests).
+# condition.minRecords means recordsAffected >= that number.
+# ALLOW overrides the risk engine. REVIEW and BLOCK tighten it.
+# Apply needs an org-wide LIVE key. A TEST key can run `vulnify test --local`.
+apiVersion: vulnify.io/v1
+kind: Policy
+metadata:
+  name: allow-reads
+spec:
+  description: Reads are allowed.
+  enabled: true
+  action: READ
+  resource: ANY
+  decision: ALLOW
+  mode: ENFORCE
+---
+apiVersion: vulnify.io/v1
+kind: Policy
+metadata:
+  name: review-bulk-external-export
+spec:
+  description: An export of 100 or more records to an external destination waits for a person.
+  enabled: true
+  action: EXPORT
+  resource: ANY
+  condition:
+    destination: EXTERNAL
+    minRecords: 100
+  decision: REVIEW
+  mode: ENFORCE
+  approverRoles:
+    - OWNER
+    - ADMIN
+---
+apiVersion: vulnify.io/v1
+kind: Policy
+metadata:
+  name: block-production-deletes
+spec:
+  description: Deletes are blocked, including destructive actions on production data.
+  enabled: true
+  action: DELETE
+  resource: ANY
+  decision: BLOCK
+  mode: ENFORCE

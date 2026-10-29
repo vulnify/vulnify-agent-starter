@@ -1,12 +1,12 @@
-"""Fake business tools. Replace them with your real ones."""
+"""Stand-in business tools. Replace them with real ones. They only run after ALLOW."""
 
 
 def read_ticket(ticket_id: str) -> str:
     return f"Ticket {ticket_id}: customer asks for their invoice history."
 
 
-def export_customers(to: str, records: int) -> str:
-    return f"Exported {records} customer records to {to}."
+def export_report(to: str, records: int) -> str:
+    return f"Exported {records} records to {to}."
 
 
 def delete_table(table: str) -> str:
